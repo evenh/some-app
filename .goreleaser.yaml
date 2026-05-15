@@ -71,6 +71,9 @@ docker_signs:
     args:
       - "sign"
       - "--use-signing-config=false"
+      # sigstore/policy-controller v0.15.x verifies image signatures from the
+      # legacy cosign .sig tag; cosign v3 defaults to OCI referrer bundles.
+      - "--new-bundle-format=false"
       - "--registry-referrers-mode=legacy"
       - "--oidc-issuer=https://token.actions.githubusercontent.com"
       - "${artifact}"
