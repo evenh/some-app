@@ -80,16 +80,18 @@ docker_signs:
       - "--yes"
 
 signs:
-  - artifacts: all
+  - artifacts: checksum
     cmd: cosign
-    signature: "${artifact}.sig"
+    signature: "${artifact}.sigstore.json"
     args:
-    - "sign-blob"
-    - "--use-signing-config=false"
-    - "--oidc-issuer=https://token.actions.githubusercontent.com"
-    - "--output-signature=${signature}"
-    - "${artifact}"
-    - "--yes"
+      - "sign-blob"
+      - "--use-signing-config=false"
+      - "--oidc-issuer=https://token.actions.githubusercontent.com"
+      # Cosign v3 stores blob verification material in a bundle; signing the
+      # checksum file covers the release assets without one Rekor entry each.
+      - "--bundle=${signature}"
+      - "${artifact}"
+      - "--yes"
 
 sboms:
   - artifacts: archive
