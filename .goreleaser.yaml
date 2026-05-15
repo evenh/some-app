@@ -51,6 +51,11 @@ dockers_v2:
       - some-app
     annotations:
       "index:org.opencontainers.image.description": "{{ if not .IsSnapshot }}Totally useless{{ end }}"
+      "index:org.opencontainers.image.created": "{{.Date}}"
+      "index:org.opencontainers.image.name": "{{.ProjectName}}"
+      "index:org.opencontainers.image.revision": "{{.FullCommit}}"
+      "index:org.opencontainers.image.version": "{{.Version}}"
+      "index:org.opencontainers.image.source": "{{.GitURL}}"
     platforms:
       - linux/amd64
       - linux/arm64
