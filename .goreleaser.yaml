@@ -1,7 +1,8 @@
 version: 2
 
 builds:
-  - env:
+  - id: some-app
+    env:
       - CGO_ENABLED=0
     flags:
       - -trimpath
@@ -21,7 +22,7 @@ builds:
       - netgo
 
 archives:
-  - builds:
+  - ids:
       - some-app
     files:
       - README.md
@@ -37,33 +38,23 @@ archives:
     # use zip for windows archives
     format_overrides:
       - goos: windows
-        format: zip
+        formats:
+          - zip
 
-dockers:
-  - image_templates:
-      - "ghcr.io/evenh/some-app:{{ .Tag }}-linux-amd64"
-    use: buildx
+dockers_v2:
+  - images:
+      - "ghcr.io/evenh/some-app"
+    tags:
+      - "{{ .Tag }}"
     dockerfile: Dockerfile.goreleaser
-    build_flag_templates:
+    ids:
+      - some-app
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    sbom: false
+    flags:
       - "--pull"
-      - "--platform=linux/amd64"
-    goos: linux
-    goarch: amd64
-  - image_templates:
-      - "ghcr.io/evenh/some-app:{{ .Tag }}-linux-arm64"
-    use: buildx
-    dockerfile: Dockerfile.goreleaser
-    build_flag_templates:
-      - "--pull"
-      - "--platform=linux/arm64"
-    goos: linux
-    goarch: arm64
-
-docker_manifests:
-  - name_template: "ghcr.io/evenh/some-app:{{ .Tag }}"
-    image_templates:
-      - "ghcr.io/evenh/some-app:{{ .Tag }}-linux-arm64"
-      - "ghcr.io/evenh/some-app:{{ .Tag }}-linux-amd64"
 
 docker_signs:
   - artifacts: all
