@@ -49,6 +49,8 @@ dockers_v2:
     dockerfile: Dockerfile.goreleaser
     ids:
       - some-app
+    annotations:
+      "index:org.opencontainers.image.description": "{{ if not .IsSnapshot }}Totally useless{{ end }}"
     platforms:
       - linux/amd64
       - linux/arm64
