@@ -1,0 +1,11 @@
+/bin/
+/deployment/.terraform/
+# TODO: Ignore generated resources if GitHub actions can run make or equivalent
+# /deployment/*.yaml
+/kubeconfig
+
+.vscode/
+.idea/
+dist/
+istio-*
+!**/istio/

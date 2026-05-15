@@ -71,6 +71,7 @@ docker_signs:
     args:
       - "sign"
       - "--use-signing-config=false"
+      - "--registry-referrers-mode=legacy"
       - "--oidc-issuer=https://token.actions.githubusercontent.com"
       - "${artifact}"
       - "--yes"
