@@ -1,0 +1,11 @@
+FROM golang:1.26.3 AS base
+# Needed for ca-certs
+
+FROM scratch
+
+COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+# Copy prebuilt binaries for that arch
+COPY some-app /some-app
+
+USER 65532:65532
+ENTRYPOINT ["/some-app"]
